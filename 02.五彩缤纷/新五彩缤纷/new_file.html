@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#bu{
+				width: 100%;
+				background-color:rgba(0,0,0,0);
+				/* a = alpha 透明 */
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="bu">
+			
+		</div>
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+//		var suiji = Math.random();//随机取值一个0到1的数
+//			console.log(suiji);
+//		
+		function getRandom(min, max) {
+			if (!max) {
+				max = min;
+				min = 0;//如果只有一个参数，那么这个参数最大值等于最小值，最小值等于0
+			}
+			return min + Math.floor(Math.random() * (max - min));
+		}//最小的参数加上于最大的差值，取出一个随机数
+		
+		var els = [];
+		var div = document.getElementById("bu");
+//		alert(div.clientHeight);//alert打印
+//		alert(document.body.scrollHeight);
+		div.style.height = document.body.scrollHeight + "px";//给div跟网页等高
+		var size = 60
+		var colorArr = ["red","green","yellow","blue","block","gray","organ","purple"];
+//获取到鼠标的位置，x,y
+		div.onmousemove = function(e) {
+			console.dir(e);
+			console.log("x = " + e.x, ", y =" + e.y);//输出xy的准确值
+			var posX = e.x;
+			var posY = e.y;//存成一个变量，数值类型
+			 
+			 //存进一个对象里面
+			var pos = {
+				x: e.x,
+				y: e.y
+			};
+			//存成一个数组
+			var posArr = [e.x, e.y];
+
+			var randInt = Math.floor(Math.random() * 8);
+			var obj = {
+				x: posX,
+				y: posY,
+				size: size,
+				color: colorArr[randInt]				
+			}
+			var el = createDiv(obj);
+			
+			//4.把新div加入到队列中
+			obj.el = el;
+			els.push(obj);
+
+//			setTimeout(function(){
+//				div.removeChild(el);//remove删除对象
+//			}, 100);
+		};
+		
+//		var intervalId = setInterval(function() {
+//			var divs = div.getElementsByTagName("div");
+//			for (var i = 0; i < divs.length; i++) {
+//				div.removeChild(divs[i]);
+//			}
+//			
+//			for (var i = 0; i < els.length; i++) {
+//				var divEl = createDiv(els[i]);
+//				obj.el = divEl;
+//				animate(obj);
+//			}
+//		}, 60);
+		//clearInterval(intervalId);
+		function animate(obj) {
+			var el = obj.el;
+			var posX = obj.x;
+			var posY = obj.y;
+			
+			el.style.top = posY + getRandom(-40,40) + "px";
+			el.style.left = posX + getRandom(-40,40) + "px";
+			
+			var newSize = size - getRandom(3)
+			el.style.width = newSize + "px";
+			el.style.height = newSize + "px";
+			
+			if (newSize <= 0) {
+				el.parentNode.removeChild(el);
+				
+			}
+		}
+//			console.log(getRandom(-40,40));
+		function createDiv(obj) {
+			//1.创建一个新DIV 
+			var el = document.createElement("div");//添加一个子对象；create	Element
+			//2.给新的DiV设置样式
+			el.style.width = obj.size + "px"//设置div的宽
+			el.style.height = obj.size + "px";//设置div的高
+			el.style.borderRadius = "50%";//形状变成圆
+			
+			//这个设置新增div的颜色
+			el.style.background = obj.color;
+			
+			//给所有新增div设置定位
+			el.style.position = "absolute";
+			el.style.left = obj.x + "px";
+			el.style.top = obj.y + "px";
+						
+			//3.把新div加到bu标签里
+			div.appendChild(el);
+			
+			return el;
+		}
+	</script>
+</html>

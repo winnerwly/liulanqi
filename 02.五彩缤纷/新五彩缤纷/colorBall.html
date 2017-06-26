@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+			function getRandom(min, max) {
+				if (!max) {
+					max = min;
+					min = 0;
+				}
+				return min + Math.floor(Math.random() * (max - min));
+			}
+		</script>
+		<script type="text/javascript" src="ColorBall.js"></script>
+		<style type="text/css">
+			#bu{
+				width: 100%;
+				background-color:rgba(0,0,0,0);
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="bu"></div>		
+	</body>	
+	<script type="text/javascript">
+		var div = document.getElementById("bu");
+		div.style.height = document.body.scrollHeight + "px";
+
+		var els = [];
+
+		div.onmousemove = function(e) {
+			var x = e.x;
+			var y = e.y;
+			
+			if (div.childNodes.length == 0) {
+				els.length = 0;
+			}
+
+			els.push(new ColorBall({
+				x: x,
+				y: y,
+				parent: div
+			}));
+		};
+
+		setInterval(function() {
+			for (var i = 0; i < div.childNodes.length; i++) {
+				div.removeChild(div.childNodes[i]);
+			}
+
+			for (var i = 0; i < els.length; i++) {
+				els[i].render();
+				els[i].animate();
+			}
+		}, 60);
+	</script>
+</html>
